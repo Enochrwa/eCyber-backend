@@ -1,0 +1,9 @@
+/api/network/events - Historical events
+
+/api/network/stats - Current statistics
+
+/api/network/events/stream - Real-time SSE stream
+
+/api/network/top-threats - Highest risk events
+
+/api/network/reset - Reset counters
