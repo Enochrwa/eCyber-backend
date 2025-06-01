@@ -100,6 +100,9 @@ class SystemMonitorProcess(mp.Process):
 
     def _calculate_file_hash(self, file_path: str) -> Optional[Dict[str, str]]:
         """Safe file hashing with large file support and error handling"""
+        if os.path.isdir(file_path):
+            logger.warning(f"Skipping directory: {file_path}")
+            return None
         if not os.path.exists(file_path):
             logger.warning(f"File not found: {file_path}")
             return None
@@ -859,15 +862,6 @@ class SystemMonitor(mp.Process):
             logger.error(f"Connection analysis failed: {e}")
             return None
 
-    def _calculate_file_hash(self, file_path: str) -> str:
-        """Calculate multiple hash types for file identification"""
-        hashes = {}
-        with open(file_path, "rb") as f:
-            data = f.read()
-            hashes["sha256"] = hashlib.sha256(data).hexdigest()
-            hashes["md5"] = hashlib.md5(data).hexdigest()
-        return hashes
-
     async def quarantine_file(self, file_path: str, reason: str):
         """Move file to quarantine with forensic metadata"""
         try:
@@ -878,7 +872,7 @@ class SystemMonitor(mp.Process):
             )
             os.makedirs(quarantine_dir, exist_ok=True)
 
-            file_hash = self._calculate_file_hash(file_path)
+            file_hash = self.monitor_process._calculate_file_hash(file_path)
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             new_name = f"{timestamp}_{os.path.basename(file_path)}.quarantined"
             dest_path = os.path.join(quarantine_dir, new_name)
