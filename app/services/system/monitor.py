@@ -5,8 +5,6 @@ import psutil
 import cpuinfo
 import platform
 import math
-import win32api
-import win32security
 import os
 import glob
 import asyncio
@@ -1276,6 +1274,7 @@ class SystemMonitor(mp.Process):
         Return additional user information for Windows systems.
         Requires `pywin32`, fallback to minimal info if unavailable.
         """
+        import win32security
         try:
             sid, domain, _ = win32security.LookupAccountName(None, username)
             return {"domain": domain, "sid": win32security.ConvertSidToStringSid(sid)}

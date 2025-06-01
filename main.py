@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 import asyncio
 import logging
+import os
 from scapy.all import get_if_list
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi import FastAPI
@@ -137,8 +138,9 @@ async def create_app() -> FastAPI:
         intel = ThreatIntel()
         await intel.load_from_cache()
         asyncio.create_task(intel.fetch_and_cache_feeds())
+        rules_path = os.path.join(os.path.dirname(__file__), 'rules.json')
         ips = EnterpriseIPS(
-            "rules.json",
+            rules_path,
             sio,
             intel,
             multiprocessing.cpu_count(),
@@ -327,7 +329,7 @@ if __name__ == "__main__":
 
     config = Config()
     config.bind = ["127.0.0.1:8000"]
-    config.use_reloader = True
+    # config.use_reloader = True
 
     async def run():
         app = await create_app()  # Properly await the app creation
