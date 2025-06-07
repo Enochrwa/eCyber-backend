@@ -303,12 +303,16 @@ async def create_app() -> FastAPI:
 
 
 # Socket.IO events
-@sio.event
+@sio.event()
 async def connect(sid, environ):
-    pass
-    # interfaces = get_if_list()
-    # await sio.emit("interfaces", interfaces, to=sid)
-    # PROD_CLEANUP: logger.info(f"Client connected: {sid[:8]}...")
+    global server_ready_emitted
+    if not server_ready_emitted:
+        await sio.emit(
+            "server_ready", {"status": "ready"}, to=sid, namespace="/packet_sniffer"
+        )
+        server_ready_emitted = True
+        logger.info("✅ server_ready event emitted to first client.")
+    logger.info(f"Client connected to /packet_sniffer: {sid}")
 
 
 @sio.on("start_sniffing")
@@ -354,8 +358,9 @@ async def emit_progress():
 async def mark_server_ready():
     global server_ready_emitted
     total_time = time.time() - startup_start_time
-    await sio.emit("server_ready", {"startup_time": total_time})
+    await sio.emit("server_ready", {"startup_time": total_time}, namespace="/packet_sniffer")
     server_ready_emitted = True
+
 
 
 # Hypercorn entry point
