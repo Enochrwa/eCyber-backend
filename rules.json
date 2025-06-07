@@ -1,0 +1,696 @@
+[
+  {
+    "id": "SCAN-001",
+    "name": "Stealth TCP Scan (SYN/FIN)",
+    "protocol": "tcp",
+    "flags": "S,F",  
+    "threshold": 50,
+    "window": 10,
+    "action": "throttle",
+    "severity": "medium",
+    "mitre_tactic": "TA0043",
+    "mitre_technique": "T1046",
+    "description": "Detects TCP stealth scans using SYN/FIN flag combinations"
+  },
+  {
+    "id": "SCAN-002",
+    "name": "UDP Port Sweep",
+    "protocol": "udp",
+    "destination_port": "1-1024",
+    "threshold": 100,
+    "window": 30,
+    "action": "alert",
+    "severity": "medium",
+    "mitre_tactic": "TA0043",
+    "description": "Detects rapid UDP port scanning activity"
+  },
+  {
+    "id": "SCAN-003",
+    "name": "NMAP NULL Scan",
+    "protocol": "tcp",
+    "flags": "0", 
+    "action": "alert",
+    "severity": "high",
+    "mitre_technique": "T1046",
+    "description": "Detects TCP NULL scans often used by NMAP"
+  },
+  {
+    "id": "SCAN-004",
+    "name": "HTTP User-Agent Anomaly",
+    "protocol": "http",
+    "pattern": "(?:curl|wget|python-requests|java|php|ruby)",
+    "action": "alert",
+    "severity": "medium",
+    "description": "Detects unusual User-Agent strings in HTTP requests"
+  },
+  {
+    "id": "SCAN-005",
+    "name": "SSH Brute Force",
+    "protocol": "tcp",
+    "destination_port": "22",
+    "threshold": 10,
+    "window": 60,
+    "action": "block",
+    "severity": "high",
+    "mitre_technique": "T1110.001",
+    "description": "Blocks SSH brute force attempts"
+  },
+  {
+    "id": "SCAN-006",
+    "name": "DNS Zone Transfer Attempt",
+    "protocol": "dns",
+    "pattern": "\\bAXFR\\b",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects unauthorized DNS zone transfer attempts"
+  },
+  {
+    "id": "SCAN-007",
+    "name": "HTTP Method Anomaly",
+    "protocol": "http",
+    "pattern": "(?:PUT|DELETE|TRACE|OPTIONS)",
+    "action": "alert",
+    "severity": "medium",
+    "description": "Detects unusual HTTP methods in requests"
+  },
+  {
+    "id": "SCAN-008",
+    "name": "FTP Bounce Attack",
+    "protocol": "tcp",
+    "pattern": "\\bPORT\\b.*\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects FTP bounce attack patterns"
+  },
+  {
+    "id": "SCAN-009",
+    "name": "SMB Null Session Attempt",
+    "protocol": "smb",
+    "pattern": "\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects SMB null session attempts"
+  },
+  {
+    "id": "SCAN-010",
+    "name": "Telnet Brute Force",
+    "protocol": "tcp",
+    "destination_port": "23",
+    "threshold": 10,
+    "window": 60,
+    "action": "block",
+    "severity": "high",
+    "mitre_technique": "T1110.001",
+    "description": "Blocks Telnet brute force attempts"
+  },
+  {
+    "id": "SCAN-011",
+    "name": "RDP Brute Force",
+    "protocol": "tcp",
+    "destination_port": "3389",
+    "threshold": 10,
+    "window": 60,
+    "action": "block",
+    "severity": "high",
+    "mitre_technique": "T1110.001",
+    "description": "Blocks RDP brute force attempts"
+  },
+  {
+    "id": "SCAN-012",
+    "name": "LDAP Injection Attempt",
+    "protocol": "ldap",
+    "pattern": "(?:\\(|\\)|\\*|\\?|\\[|\\]|\\\\)",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects LDAP injection attempts"
+  },
+  {
+    "id": "SCAN-013",
+    "name": "SMTP Relay Attempt",
+    "protocol": "smtp",
+    "pattern": "\\bHELO\\b|\\bEHLO\\b|\\bMAIL FROM:\\b|\\bRCPT TO:\\b",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects SMTP relay attempts"
+  },
+  {
+    "id": "SCAN-014",
+    "name": "ICMP Flood Attack",
+    "protocol": "icmp",
+    "threshold": 100,
+    "window": 10,
+    "action": "block",
+    "severity": "high",
+    "description": "Blocks ICMP flood attacks"
+  },
+  {
+    "id": "SCAN-015",
+    "name": "HTTP Slowloris Attack",
+    "protocol": "http",
+    "pattern": "(?:GET|POST)\\s+\\/.*\\s+HTTP\\/1\\.1\\r\\n\\s*Host:\\s*[^\\r\\n]+\\r\\n",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP Slowloris attack patterns"
+  },
+  {
+    "id": "SCAN-016",
+    "name": "WebDAV Scan",
+    "protocol": "http",
+    "pattern": "(?:PROPFIND|OPTIONS|MKCOL|COPY|MOVE|LOCK|UNLOCK)",
+    "action": "alert",
+    "severity": "medium",
+    "description": "Detects WebDAV scanning attempts"
+  },
+  {
+    "id": "SCAN-017",
+    "name": "HTTP Response Splitting",
+    "protocol": "http",
+    "pattern": "(?:\\r\\n\\r\\n|\\r\\n\\n)",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP response splitting attempts"
+  },
+  {
+    "id": "SCAN-018",
+    "name": "HTTP Parameter Pollution",
+    "protocol": "http",
+    "pattern": "(?:\\?|&)(?:\\w+)=\\w+&\\1=\\w+",
+    "action": "alert",
+    "severity": "medium",
+    "description": "Detects HTTP parameter pollution attempts"
+  },
+  {
+    "id": "SCAN-019",
+    "name": "HTTP Host Header Injection",
+    "protocol": "http",
+    "pattern": "(?:Host|X-Forwarded-Host):\\s*[^\\r\\n]+",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP host header injection attempts"
+  },
+  {
+    "id": "SCAN-020",
+    "name": "HTTP Content Injection",
+    "protocol": "http",
+    "pattern": "(?:Content-Type|Content-Length):\\s*[^\\r\\n]+",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP content injection attempts"
+  },
+  {
+    "id": "SCAN-021",
+    "name": "HTTP Response Splitting",
+    "protocol": "http",
+    "pattern": "(?:\\r\\n\\r\\n|\\r\\n\\n)",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP response splitting attempts"
+  },
+  {
+    "id": "SCAN-022",
+    "name": "HTTP Smuggling Attack",
+    "protocol": "http",
+    "pattern": "(?:Transfer-Encoding|Content-Length):\\s*0\\r\\n\\r\\n.*(?:GET|POST|PUT|DELETE)\\s+\\/.*\\s+HTTP\\/1\\.1",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP smuggling attack patterns"
+  },
+  {
+    "id": "SCAN-023",
+    "name": "HTTP Request Smuggling",
+    "protocol": "http",
+    "pattern": "(?:Transfer-Encoding|Content-Length):\\s*0\\r\\n\\r\\n.*(?:GET|POST|PUT|DELETE)\\s+\\/.*\\s+HTTP\\/1\\.1",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP request smuggling attempts"
+  },
+  {
+    "id": "SCAN-024",
+    "name": "HTTP Response Splitting",
+    "protocol": "http",
+    "pattern": "(?:\\r\\n\\r\\n|\\r\\n\\n)",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP response splitting attempts"
+  },
+  {
+    "id": "SCAN-025",
+    "name": "HTTP Parameter Pollution",
+    "protocol": "http",
+    "pattern": "(?:\\?|&)(?:\\w+)=\\w+&\\1=\\w+",
+    "action": "alert",
+    "severity": "medium",
+    "description": "Detects HTTP parameter pollution attempts"
+  },
+  {
+    "id": "SCAN-026",
+    "name": "HTTP Host Header Injection",
+    "protocol": "http",
+    "pattern": "(?:Host|X-Forwarded-Host):\\s*[^\\r\\n]+",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP host header injection attempts"
+  },
+  {
+    "id": "SCAN-027",
+    "name": "HTTP Content Injection",
+    "protocol": "http",
+    "pattern": "(?:Content-Type|Content-Length):\\s*[^\\r\\n]+",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP content injection attempts"
+  },
+  {
+    "id": "SCAN-028",
+    "name": "HTTP Response Splitting",
+    "protocol": "http",
+    "pattern": "(?:\\r\\n\\r\\n|\\r\\n\\n)",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP response splitting attempts"
+  },
+  {
+    "id": "SCAN-029",
+    "name": "HTTP Smuggling Attack",
+    "protocol": "http",
+    "pattern": "(?:Transfer-Encoding|Content-Length):\\s*0\\r\\n\\r\\n.*(?:GET|POST|PUT|DELETE)\\s+\\/.*\\s+HTTP\\/1\\.1",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects HTTP smuggling attack patterns"
+  },
+  {
+  "id": "EXPLOIT-101",
+  "name": "Log4Shell Exploit (CVE-2021-44228)",
+  "protocol": "http",
+  "pattern": "(?:\\$\\{jndi:(?:ldap[s]?|rmi|dns|nis|iiop|corba|nds|http):\\/\\/[^\\s}]+)|(?:\\$\\{\\s*(?:lower|upper|env|sys|java|date|jvm|main|docker|k8s|aws|gcp):)",
+  "action": "block",
+  "severity": "critical",
+  "cve": "CVE-2021-44228",
+  "mitre_technique": "T1190",
+  "description": "Blocks Log4J remote code execution attempts with enhanced patterns"
+},
+  {
+    "id": "EXPLOIT-102",
+    "name": "ProxyShell Exploit (CVE-2021-34473)",
+    "protocol": "http",
+    "pattern": "(?:POST|GET)\\s+/autodiscover/autodiscover\\.xml.*X-Rps-CAT",
+    "action": "block",
+    "severity": "critical",
+    "cve": ["CVE-2021-34473", "CVE-2021-34523", "CVE-2021-31207"],
+    "description": "Prevents Microsoft Exchange ProxyShell exploitation"
+  },
+  {
+    "id": "EXPLOIT-103",
+    "name": "Spring4Shell (CVE-2022-22965)",
+    "protocol": "http",
+    "pattern": "class\\.module\\.classLoader\\..*\\..*\\[.*\\]=",
+    "action": "block",
+    "severity": "critical",
+    "cve": "CVE-2022-22965",
+    "description": "Blocks Spring Framework RCE attempts"
+  },
+
+
+  {
+    "id": "MAL-201",
+    "name": "Cobalt Strike Beacon",
+    "protocol": "tcp",
+    "pattern": "\\x00\\x00\\x00\\x00\\x62\\x00\\x00\\x00.{4}\\x00\\x00\\x00\\x00",
+    "action": "block",
+    "severity": "critical",
+    "mitre_software": "S0154",
+    "description": "Detects Cobalt Strike C2 beaconing with more specific pattern"
+  },
+  {
+    "id": "MAL-202",
+    "name": "Emotet Malware Pattern",
+    "protocol": "http",
+    "pattern": "\\x4D\\x5A.{100,300}Rich.{20,60}This program cannot be run in DOS mode",
+    "action": "quarantine",
+    "severity": "high",
+    "description": "Identifies Emotet loader characteristics with size constraints"
+  },
+  {
+    "id": "MAL-203",
+    "name": "Qakbot Banking Trojan",
+    "protocol": "tls",
+    "sni_pattern": "(?:api|cdn|update)\\.(?:azure|aws|google|cloud)\\.\\w+\\.\\w{2,6}",
+    "action": "block",
+    "severity": "high",
+    "description": "Detects Qakbot C2 communications via TLS SNI"
+  },
+
+  {
+    "id": "CRED-301",
+    "name": "RDP Brute Force",
+    "protocol": "tcp",
+    "destination_port": "3389",
+    "threshold": 10,
+    "window": 60,
+    "action": "block",
+    "severity": "high",
+    "mitre_technique": "T1110",
+    "description": "Blocks RDP credential stuffing attacks"
+  },
+  {
+    "id": "CRED-302",
+    "name": "Kerberoasting Attempt",
+    "protocol": "kerberos",
+    "pattern": "tgs-rep.*enc-type\\s*=\\s*23\\b",  
+    "action": "alert",
+    "severity": "medium",
+    "mitre_technique": "T1558.003",
+    "description": "Detects Kerberos ticket encryption downgrade"
+  },
+  {
+    "id": "CRED-303",
+    "name": "NTLM Relay Attack",
+    "protocol": "smb",
+    "pattern": "NTLMSSP\\x00\\x01.*NTLMSSP\\x00\\x03",
+    "action": "block",
+    "severity": "high",
+    "description": "Detects NTLM relay attack patterns"
+  },
+
+  {
+    "id": "EXFIL-401",
+    "name": "DNS Tunneling",
+    "protocol": "dns",
+    "pattern": "(?:[A-Za-z0-9]{32}\\.){3,}|(?:[A-Za-z0-9]{16}\\.){5,}",
+    "entropy_threshold": 4.5,
+    "action": "quarantine",
+    "severity": "high",
+    "mitre_technique": "T1048",
+    "description": "Detects high-entropy DNS subdomains with improved patterns"
+  },
+  {
+    "id": "EXFIL-402",
+    "name": "HTTPS Data Exfiltration",
+    "protocol": "tls",
+    "pattern": "17\\x03\\x03.{2}(?:[\\x00-\\x1F]|\\x7F|\\x80-\\xFF)",
+    "threshold": 100,
+    "window": 5,
+    "action": "throttle",
+    "severity": "medium",
+    "description": "Throttles large TLS data transfers with better pattern matching"
+  },
+  {
+    "id": "EXFIL-403",
+    "name": "ICMP Covert Channel",
+    "protocol": "icmp",
+    "entropy_threshold": 4.8,
+    "size_threshold": 256,
+    "action": "block",
+    "severity": "high",
+    "description": "Detects data exfiltration via ICMP packets"
+  },
+
+ 
+  {
+    "id": "WEB-501",
+    "name": "SQL Injection",
+    "protocol": "http",
+    "pattern": "(?:'\\s+(?:OR|AND|XOR)\\s+[\\d]+\\s*=\\s*[\\d]+|(?:SELECT|UNION|INSERT|UPDATE|DELETE|DROP|ALTER|CREATE|EXEC|DECLARE).+?(?:FROM|INTO|WHERE|SET|TABLE)|\\b(?:WAITFOR|SLEEP)\\s*\\(|\\b(?:IF|ELSE|END)\\s*\\()",
+    "action": "block",
+    "severity": "critical",
+    "mitre_technique": "T1190",
+    "description": "Blocks SQL injection patterns with comprehensive coverage"
+  },
+  {
+    "id": "WEB-502",
+    "name": "XSS Payload",
+    "protocol": "http",
+    "pattern": "<script\\b[^>]*>(.*?)<\\/script>|javascript:\\s*(?:alert|prompt|confirm|eval|setTimeout|setInterval)\\(|on(?:load|error|mouseover|click|submit)\\s*=",
+    "action": "block",
+    "severity": "high",
+    "description": "Prevents cross-site scripting attacks with modern patterns"
+  },
+  {
+    "id": "WEB-503",
+    "name": "Path Traversal",
+    "protocol": "http",
+    "pattern": "(?:\\/\\.\\.\\/|\\/\\.\\.$|\\~\\/|\\.\\.%2f|\\.\\.%5c|%2e%2e%2f|%252e%252e%252f)",
+    "action": "block",
+    "severity": "high",
+    "description": "Blocks directory traversal attempts"
+  },
+
+ 
+  {
+    "id": "NET-601",
+    "name": "TCP Session Hijack",
+    "protocol": "tcp",
+    "pattern": "(?:ACK|RST)\\x00{12}",
+    "sequence_analysis": true,
+    "action": "block",
+    "severity": "high",
+    "description": "Detects TCP sequence number prediction"
+  },
+  {
+    "id": "NET-602",
+    "name": "ICMP Tunnel",
+    "protocol": "icmp",
+    "pattern": "\\x08\\x00.{4}(?:[\\x00-\\xFF]{4})",
+    "threshold": 100,
+    "window": 10,
+    "action": "alert",
+    "severity": "medium",
+    "description": "Detects potential ICMP covert channels"
+  },
+  {
+    "id": "NET-603",
+    "name": "ARP Spoofing",
+    "protocol": "arp",
+    "pattern": ".*\\xFF\\xFF\\xFF\\xFF\\xFF\\xFF.*",
+    "threshold": 50,
+    "window": 30,
+    "action": "block",
+    "severity": "high",
+    "description": "Detects ARP spoofing attempts"
+  },
+  {
+    "id": "NET-604",
+    "name": "DNS Amplification Attack",
+    "protocol": "dns",
+    "pattern": "\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00",
+    "threshold": 100,
+    "window": 10,
+    "action": "block",
+    "severity": "high",
+    "description": "Blocks DNS amplification attack patterns"
+  },
+  {
+    "id": "NET-605",
+    "name": "HTTP Flood Attack",
+    "protocol": "http",
+    "pattern": "(?:GET|POST|HEAD|PUT|DELETE|OPTIONS)\\s+\\/.*\\s+HTTP\\/1\\.1",
+    "threshold": 100,
+    "window": 10,
+    "action": "block",
+    "severity": "high",
+    "description": "Blocks HTTP flood attack patterns"
+  },
+  {
+    "id": "NET-606",
+    "name": "SYN Flood Attack",
+    "protocol": "tcp",
+    "flags": "S",  
+    "threshold": 100,
+    "window": 10,
+    "action": "block",
+    "severity": "high",
+    "description": "Blocks SYN flood attack patterns"
+  },
+  {
+    "id": "BEH-701",
+    "name": "Lateral Movement Spike",
+    "protocol": "smb",
+    "source_ip": "internal",
+    "destination_ip": "internal",
+    "threshold": 50,
+    "window": 300,
+    "action": "alert",
+    "ml_model": "lstm_lateral",
+    "severity": "high",
+    "description": "Detects internal host communication anomalies"
+  },
+  {
+    "id": "BEH-702",
+    "name": "Data Staging Pattern",
+    "protocol": "http",
+    "pattern": "\\.(zip|rar|7z|tar|gz|bz2|xz)\\x00",
+    "action": "quarantine",
+    "severity": "medium",
+    "description": "Identifies archive files in web traffic"
+  },
+  {
+    "id": "BEH-703",
+    "name": "Ransomware Behavior",
+    "protocol": "smb",
+    "pattern": "\\x2e\\x65\\x6e\\x63\\x72\\x79\\x70\\x74\\x65\\x64", 
+    "action": "block",
+    "severity": "critical",
+    "description": "Detects ransomware file encryption patterns"
+  },
+
+  {
+    "id": "TI-801",
+    "name": "Known Malicious IP",
+    "source_ip": "threat_feed",
+    "threat_feed": ["AbuseIPDB", "FireHOL", "AlienVault"],
+    "action": "block",
+    "severity": "high",
+    "description": "Automatically block TI-verified malicious IPs"
+  },
+  {
+    "id": "TI-802",
+    "name": "Tor Exit Node",
+    "source_ip": "tor",
+    "action": "throttle",
+    "severity": "low",
+    "description": "Limit traffic from known Tor networks"
+  },
+  {
+    "id": "TI-803",
+    "name": "Bulletproof Hosting",
+    "source_ip": "bulletproof",
+    "threat_feed": ["Spamhaus", "Blocklist.de"],
+    "action": "block",
+    "severity": "medium",
+    "description": "Blocks traffic from known bulletproof hosting providers"
+  },
+
+
+  {
+    "id": "CLD-901",
+    "name": "AWS Metadata API Access",
+    "protocol": "http",
+    "pattern": "(?:GET|POST)\\s+\\/(?:latest|v1|v2)\\/meta(?:data)?\\/",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects EC2 metadata service access attempts"
+  },
+  {
+    "id": "CLD-902",
+    "name": "Kubernetes API Scan",
+    "protocol": "https",
+    "destination_port": "6443",
+    "pattern": "\\/(?:api|apis|healthz|readyz|livez|metrics)\\s",
+    "threshold": 20,
+    "severity": "medium",
+    "window": 60,
+    "action": "block",
+    "description": "Blocks Kubernetes API enumeration"
+  },
+  {
+    "id": "CLD-903",
+    "name": "Cloud Credential Leak",
+    "protocol": "http",
+    "pattern": "(?:AWS_ACCESS_KEY_ID|AZURE_CLIENT_SECRET|GCP_SERVICE_ACCOUNT)\\s*=\\s*['\"][A-Za-z0-9\\/+]{20,}['\"]",
+    "action": "quarantine",
+    "severity": "critical",
+    "description": "Detects cloud credential leaks in HTTP traffic"
+  },
+  {
+    "id": "IOT-1000",
+    "name": "IoT Device Scan",
+    "protocol": "tcp",
+    "destination_port": "80,443,8080,8888,5000,6000",
+    "threshold": 50,
+    "severity": "medium",
+    "window": 10,
+    "action": "alert",
+    "description": "Detects scanning of IoT device ports"
+  },
+  {
+    "id": "IOT-1002",
+    "name": "IoT Device Firmware Update",
+    "protocol": "http",
+    "pattern": "\\/update\\/firmware\\/",
+    "action": "alert",
+    "severity": "medium",
+    "description": "Detects IoT device firmware update attempts"
+  },
+
+  {
+    "id": "IOT-1004",
+    "name": "IoT Device Default Credentials",
+    "protocol": "tcp",
+    "pattern": "(?:admin|root|guest)\\s*:\\s*(?:admin|password|123456)",
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects use of default credentials on IoT devices"
+  },
+  {
+    "id": "IOT-1005",
+    "name": "IoT Device DDoS Attack",
+    "protocol": "udp",
+    "pattern": "\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00",
+    "threshold": 100,
+    "window": 10,
+    "action": "block",
+    "severity": "critical",
+    "description": "Blocks DDoS attacks targeting IoT devices"
+  },
+  {
+    "id": "IOT-1001",
+    "name": "Mirai Botnet Pattern",
+    "protocol": "tcp",
+    "pattern": "\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00",
+    "action": "block",
+    "severity": "critical",
+    "description": "Detects Mirai botnet handshake patterns"
+  },
+
+  {
+    "id": "IOT-1003",
+    "name": "Modbus Unauthorized Command",
+    "protocol": "tcp",
+    "destination_port": "502",
+    "pattern": "\\x00\\x00\\x00\\x00\\x00\\x06\\x01\\x[0-9A-Fa-f]{2}",
+    "action": "block",
+    "severity": "high",
+    "description": "Blocks unauthorized Modbus commands"
+  },
+
+  {
+    "id": "ML-1101",
+    "name": "Anomalous HTTP Behavior",
+    "protocol": "http",
+    "ml_model": "http_anomaly",
+    "threshold": 0.95,
+    "action": "alert",
+    "severity": "medium",
+    "description": "Detects anomalous HTTP patterns using machine learning"
+  },
+  {
+    "id": "ML-1102",
+    "name": "Encrypted Traffic Anomaly",
+    "protocol": "tls",
+    "ml_model": "tls_anomaly",
+    "threshold": 0.90,
+    "action": "alert",
+    "severity": "high",
+    "description": "Detects anomalous TLS patterns suggesting malware C2"
+  },
+
+
+  {
+    "id": "ZD-1201",
+    "name": "Memory Corruption Patterns",
+    "protocol": "http",
+    "pattern": "(?:%[0-9a-fA-F]{2}|\\\\x[0-9a-fA-F]{2}|\\x[0-9a-fA-F]{2}){8,}",
+    "action": "block",
+    "severity": "critical",
+    "description": "Blocks potential memory corruption attempts"
+  },
+  {
+    "id": "ZD-1202",
+    "name": "Obfuscated JavaScript",
+    "protocol": "http",
+    "pattern": "(?:eval\\(|\\b(?:fromCharCode|decodeURIComponent|String\\.fromCharCode)\\s*\\(|\\/\\*@\\s*\\$\\s*@\\*\\/)",
+    "action": "block",
+    "severity": "high",
+    "description": "Blocks heavily obfuscated JavaScript payloads"
+  }
+]
