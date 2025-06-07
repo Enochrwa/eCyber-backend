@@ -1,0 +1,49 @@
+{
+  "f1": 1.0,
+  "accuracy": 1.0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "auc": 1.0,
+  "confusion_matrix": [
+    [
+      4,
+      0
+    ],
+    [
+      0,
+      3
+    ]
+  ],
+  "cv": {
+    "accuracy": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "f1": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "precision": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "recall": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "roc_auc": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    }
+  }
+}
